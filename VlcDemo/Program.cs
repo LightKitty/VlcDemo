@@ -1,10 +1,6 @@
 ﻿using LightLog;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Pipes;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VlcDemo
@@ -18,7 +14,9 @@ namespace VlcDemo
         static void Main(string[] args)
         {
             Log.SetFolderPath(System.AppDomain.CurrentDomain.BaseDirectory + "log");
-            //Log.Debug(Newtonsoft.Json.JsonConvert.SerializeObject(args));
+#if DEBUG
+            Log.Debug(Newtonsoft.Json.JsonConvert.SerializeObject(args));
+#endif
             bool stdin = args.FirstOrDefault() == "--input-title-format";
 
             Application.EnableVisualStyles();

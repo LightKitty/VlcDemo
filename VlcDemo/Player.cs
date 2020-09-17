@@ -28,6 +28,8 @@ namespace VlcDemo
             this.stdin = stdin;
 
             InitializeComponent();
+
+            if (stdin) VlcControl.Play("fd://0"); // Standard input pipe
         }
 
         /// <summary>
@@ -37,7 +39,7 @@ namespace VlcDemo
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void myVlcControl_VlcLibDirectoryNeeded(object sender, VlcLibDirectoryNeededEventArgs e)
+        private void VlcControl_VlcLibDirectoryNeeded(object sender, VlcLibDirectoryNeededEventArgs e)
         {
             var currentAssembly = Assembly.GetEntryAssembly();
             var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
@@ -45,9 +47,9 @@ namespace VlcDemo
             if (currentDirectory == null)
                 return;
             if (IntPtr.Size == 4)
-                e.VlcLibDirectory = new DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory + @"libvlc\win-x86\");
+                e.VlcLibDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + @"libvlc\win-x86\");
             else
-                e.VlcLibDirectory = new DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory + @"libvlc\win-x64\");
+                e.VlcLibDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + @"libvlc\win-x64\");
 
             if (!e.VlcLibDirectory.Exists)
             {
@@ -60,11 +62,6 @@ namespace VlcDemo
                     e.VlcLibDirectory = new DirectoryInfo(folderBrowserDialog.SelectedPath);
                 }
             }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            if(stdin) vlcControl1.Play("fd://0"); // Standard input pipe
         }
     }
 }
